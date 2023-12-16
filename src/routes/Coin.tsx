@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -34,10 +34,25 @@ interface routeState {
 }
 
 function Coin() {
-  const [loading, setLoading] = useState(true);
-  const { coinId } = useParams<RouteParams>(); // useParams는 URl의 파라미터들을 반환하는 함수
   // const { coinId } = useParams<coinId:string>();  // 이렇게 해도 됨
+  const { coinId } = useParams<RouteParams>(); // useParams는 URl의 파라미터들을 반환하는 함수
   const { state } = useLocation<routeState>();
+  const [loading, setLoading] = useState(true);
+  const [info, setInfo] = useState({});
+  const [priceInfo, setPriceInfo] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const infoData = await (
+        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+      ).json();
+      const priceData = await (
+        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+      ).json();
+      setInfo(infoData);
+      setPriceInfo(priceData);
+    })();
+  }, []);
 
   return (
     <Container>
