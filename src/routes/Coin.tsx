@@ -145,7 +145,11 @@ interface PriceData {
   };
 }
 
-function Coin() {
+interface ICoinProps {
+  isDark: boolean;
+}
+
+function Coin({ isDark }: ICoinProps) {
   // const { coinId } = useParams<coinId:string>();  // 이렇게 해도 됨
   const { coinId } = useParams<RouteParams>(); // useParams는 URl의 파라미터들을 반환하는 함수
   const { state } = useLocation<routeState>();
@@ -157,10 +161,10 @@ function Coin() {
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId),
-    {
-      refetchInterval: 5000,
-    }
+    () => fetchCoinTickers(coinId)
+    // {
+    //   refetchInterval: 5000,
+    // }
   );
 
   const loading = infoLoading || tickersLoading;
@@ -226,7 +230,7 @@ function Coin() {
               <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart coinId={coinId} />
+              <Chart isDark={isDark} coinId={coinId} />
             </Route>
           </Switch>
         </>

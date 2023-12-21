@@ -71,11 +71,8 @@ function App() {
     // Fragment 일종의 유령 컴포넌트 : 부모 없이 서로 붙어있는 것들을 리턴할 수 있개 해줌
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <button onClick={toggleDark}>
-          {isDark ? "Light Mode" : "Dark Mode"}
-        </button>
         <GlobalStyle />
-        <Router />
+        <Router isDark={isDark} toggleDark={toggleDark} />
         <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
     </>

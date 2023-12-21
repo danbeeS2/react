@@ -15,15 +15,16 @@ interface IData {
 
 interface chartProps {
   coinId: string;
+  isDark: boolean;
 }
 
-function Chart({ coinId }: chartProps) {
+function Chart({ coinId, isDark }: chartProps) {
   const { isLoading, data } = useQuery<IData[]>(
     ["ohlcv", coinId],
-    () => fetchCoinHistory(coinId),
-    {
-      refetchInterval: 10000,
-    }
+    () => fetchCoinHistory(coinId)
+    // {
+    //   refetchInterval: 10000,
+    // }
   );
   return (
     <div>
@@ -55,7 +56,7 @@ function Chart({ coinId }: chartProps) {
               align: "left",
             },
             grid: { show: false },
-            theme: { mode: "dark" },
+            theme: { mode: isDark ? "dark" : "light" },
             stroke: {
               curve: "smooth",
               width: 4,
