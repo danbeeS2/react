@@ -64,7 +64,10 @@ interface ICoin {
 }
 
 function Coins() {
-  const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins); // 첫번째 인자는 qurey의 고유식별자, 두번쨰 인자는 fetcher함수
+  const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+  // 첫번째 파라미터 : qurey의 고유식별자 => 데이터를 캐싱(Caching): 특정 데이터의 복사본을 저장하여 이후 동일한 데이터의 재접근 속도를 높이는 것 (React-Query는 캐싱을 통해 동일한 데이터에 대한 반복적인 비동기 데이터 호출을 방지하고, 이는 불필요한 API 콜을 줄여 서버에 대한 부하를 줄이는 좋은 결과를 가져온다.)
+  // 두번쨰 파라미터 :  fetcher 함수 (실제 호출하고자 하는 비동기 함수 => Promise를 반환해야 함!)
+  // (최종 반환 값은 API의 성공, 실패 여부, 반환값을 포함한 객체)
   console.log(isLoading, data);
   return (
     <Container>
