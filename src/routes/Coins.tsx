@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchCoins } from "../api";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
@@ -71,6 +71,7 @@ interface ICoinsProps {}
 
 function Coins() {
   const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const isDark = useRecoilValue(isDarkAtom);
   const toggleDarkAtom = () => setDarkAtom((cur) => !cur);
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
   return (
@@ -80,7 +81,9 @@ function Coins() {
       </Helmet>
       <Header>
         <Title>COINS</Title>
-        <button onClick={toggleDarkAtom}>Toggle Mode</button>
+        <button onClick={toggleDarkAtom}>
+          {isDark ? "Light Mode" : "Dark Mode"}
+        </button>
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>
