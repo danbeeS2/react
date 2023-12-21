@@ -18,20 +18,25 @@ interface chartProps {
 }
 
 function Chart({ coinId }: chartProps) {
-  const { isLoading, data } = useQuery<IData[]>(["ohlcv", coinId], () =>
-    fetchCoinHistory(coinId)
+  const { isLoading, data } = useQuery<IData[]>(
+    ["ohlcv", coinId],
+    () => fetchCoinHistory(coinId),
+    {
+      refetchInterval: 10000,
+    }
   );
   return (
     <div>
       {isLoading ? (
         "Loading chart..."
-      ) : (
+      ) : Array.isArray(data) ? (
         <ApexCharts
           type="line"
           series={[
             {
               name: "Price",
-              data: data?.map((price) => parseFloat(price.close)) ?? [],
+              data: data?.map((price) => Number(price.close)) as number[],
+              // data: data?.map((price) => parseFloat(price.close)) ?? [],
               // ??: null 병합 연산자 (앞의 값이 null 또는 undefined일 때 [](뒤의 값) 반환)
               // close 데이터가 string이기 때문에 parseFloat를 통해 형 변환을 시켜줘야 함
             },
@@ -79,6 +84,8 @@ function Chart({ coinId }: chartProps) {
             },
           }}
         />
+      ) : (
+        <p>NO Data</p>
       )}
     </div>
   );

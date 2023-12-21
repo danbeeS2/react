@@ -1,7 +1,8 @@
+import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
 import { fetchCoins } from "../api";
 
 const Container = styled.div`
@@ -71,6 +72,9 @@ function Coins() {
   console.log(isLoading, data);
   return (
     <Container>
+      <Helmet>
+        <title>Coins</title>
+      </Helmet>
       <Header>
         <Title>COINS</Title>
       </Header>
@@ -83,7 +87,7 @@ function Coins() {
               <Link
                 to={{
                   pathname: `/${coin.id}`,
-                  state: { name: coin.name },
+                  state: { name: coin.name, symbol: coin.symbol.toLowerCase() },
                 }}
               >
                 <Img
