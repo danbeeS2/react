@@ -31,19 +31,48 @@ import { useForm } from "react-hook-form";
 } */
 
 function ToDoList() {
-  const { register, watch } = useForm();
+  const { register, handleSubmit, formState } = useForm();
+  const onValid = (data: any) => {
+    console.log(data);
+  };
   // register함수는 onBlur 이벤트, onChange 이벤트, ref, name을 가짐
-  // watch함수는 form의 입력값들의 변화를 관찰
-  console.log(watch());
+  // watch함수는 form의 입력값들의 변화를 관찰함
+  // handleSubmit은 validation을 담당함
+  // formState.errors는 에러를 발생시킴
+  console.log(formState.errors);
   return (
     <div>
-      <form>
-        <input {...register("email")} placeholder="Email" />
-        <input {...register("firstName")} placeholder="First Name" />
-        <input {...register("lastName")} placeholder="Last Name" />
-        <input {...register("userName")} placeholder="User Name" />
-        <input {...register("password")} placeholder="Password" />
-        <input {...register("password2")} placeholder="Password2" />
+      <form
+        style={{ display: "flex", flexDirection: "column" }}
+        onSubmit={handleSubmit(onValid)}
+      >
+        <input {...register("email", { required: true })} placeholder="Email" />
+        <input
+          {...register("firstName", { required: true })}
+          placeholder="First Name"
+        />
+        <input
+          {...register("lastName", { required: true })}
+          placeholder="Last Name"
+        />
+        <input
+          {...register("userName", { required: true, minLength: 10 })}
+          placeholder="User Name"
+        />
+        <input
+          {...register("password", { required: true, minLength: 5 })}
+          placeholder="Password"
+        />
+        <input
+          {...register("password2", {
+            required: "Password is required",
+            minLength: {
+              value: 5,
+              message: "Your password is too short",
+            },
+          })}
+          placeholder="Password2"
+        />
         <button>Add</button>
       </form>
     </div>
